@@ -15,6 +15,10 @@ import fastForwardButton from './svg/fast-forward-svgrepo-com.svg'
 import rewindButton from './svg/rewind-svgrepo-com.svg'
 import resetButton from './svg/reset-svgrepo-com.svg'
 
+import settingsBtn from './svg/settings-svgrepo-com.svg'
+import aboutBtn from './svg/about-svgrepo-com.svg'
+import chevronRight from './svg/chevron-right-svgrepo-com.svg'
+
 export {
     logo,
     circle,
@@ -30,5 +34,9 @@ export {
     playButton,
     fastForwardButton,
     rewindButton,
-    resetButton
+    resetButton,
+
+    settingsBtn,
+    aboutBtn,
+    chevronRight
 }

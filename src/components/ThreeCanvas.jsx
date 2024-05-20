@@ -44,15 +44,11 @@ const AxesZGreen = () => {
 
 const ThreeCanvas = (props) => {
     return (
-        <div className='bg-stone-950 flex-grow'>
-          <Canvas camera={{
-            position: [0, 0, 150],
-            fov: 75,
-            near: 0.1,
-            far: 1000
-          }}>
-
+        <div className='bg-stone-950 relative w-full'>
+          <Canvas>
+            <PerspectiveCamera makeDefault position={[0, 0, 100]}/>
             <OrbitControls/>
+
             <ambientLight intensity={1}/>
 
             {props.objects.map((object, index) => (

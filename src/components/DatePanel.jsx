@@ -3,7 +3,7 @@ import { zeroPad } from '../utils/utils'
 
 import { playButton, pauseButton, fastForwardButton, rewindButton, resetButton } from '../assets'
 
-const UPDATES_PER_SECOND = 10
+const UPDATES_PER_SECOND = 1000
 
 function updateDatestamp(datestamp, speed) {
   return new Date(datestamp.getTime() + speed * 1000/UPDATES_PER_SECOND)
@@ -14,6 +14,7 @@ const DatePanel = (props) => {
   const [paused, setPaused] = useState(false)
   const [speed, setSpeed] = useState(1)
 
+  //doubles speed each time
   function handleSpeedChange(direction) {
     setPaused(false)
 
@@ -21,12 +22,12 @@ const DatePanel = (props) => {
       if (speed === 1)
         setSpeed(-1)
       else
-        setSpeed(speed * 2)
+        setSpeed(speed * (speed < 0 ? 2 : 0.5))
     else if (direction === 'forward')
       if (speed === -1)
         setSpeed(1)
       else
-        setSpeed(speed * 2)
+        setSpeed(speed * (speed > 0 ? 2 : 0.5))
   }
 
   function handleReset() {
@@ -40,7 +41,7 @@ const DatePanel = (props) => {
     const interval = setInterval(() => {
       if (paused) return
       props.setDatestampHandler(updateDatestamp(props.simulatedDatestamp, speed))
-    }, 1000/UPDATES_PER_SECOND)
+    }, 1/UPDATES_PER_SECOND)
 
     return () => clearInterval(interval)
   }, [paused, props.simulatedDatestamp, speed])
@@ -75,20 +76,20 @@ const DatePanel = (props) => {
       </div>
       <div className='flex flex-row justify-center'>
         <button
-          className='border p-2 m-2'
-          onClick={() => handleSpeedChange('back')}><img className='max-w-6' src={rewindButton} alt='rewind'/>
+          className='border p-2 m-2 w-10'
+          onClick={() => handleSpeedChange('back')}><img className='m-auto' src={rewindButton} alt='rewind'/>
         </button>
         <button
-          className={`border p-${paused ? '3' : '2'} m-2`}
-          onClick={() => setPaused(!paused)}><img className={`max-w-${paused ? '4' : '6'}`} src={paused ? playButton : pauseButton} alt='play/pause'/>
+          className='border p-2 m-2 w-10'
+          onClick={() => setPaused(!paused)}><img className='m-auto' src={paused ? playButton : pauseButton} alt='play/pause'/>
         </button>
         <button
-          className='border p-2 m-2'
-          onClick={handleReset}><img className='max-w-6' src={resetButton} alt='reset'/>
+          className='border p-2 m-2 w-10'
+          onClick={handleReset}><img className='m-auto' src={resetButton} alt='reset'/>
         </button>
         <button
-          className='border p-2 m-2'
-          onClick={() => handleSpeedChange('forward')}><img className='max-w-6' src={fastForwardButton} alt='fast forward'/>
+          className='border p-2 m-2 w-10'
+          onClick={() => handleSpeedChange('forward')}><img className='m-auto' src={fastForwardButton} alt='fast forward'/>
         </button>
       </div>
     </div>
