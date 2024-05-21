@@ -1,27 +1,14 @@
 
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Line, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 
 import Earth from './threeObjs/Earth'
 import Satellite from './threeObjs/Satellite'
 import Observer from './threeObjs/Observer'
-  
-
-const SatelliteLine = () => {
-  const points = []
-  points.push(new THREE.Vector3(0, 0, 0))
-  points.push(new THREE.Vector3(2, 0, 0))
-  points.push(new THREE.Vector3(2, 2, 0))
-
-  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-
-  return (
-    <line geometry={lineGeometry}>
-      <lineBasicMaterial color='red'/>
-    </line>
-  )
-}
+import Camera from './threeObjs/Camera'
+import ViewingLine from './threeObjs/ViewingLine'
+import CenterLine from './threeObjs/CenterLine'
 
 const AxesZGreen = () => {
   return (
@@ -43,32 +30,55 @@ const AxesZGreen = () => {
 }
 
 const ThreeCanvas = (props) => {
-    return (
-        <div className='bg-stone-950 relative w-full'>
-          <Canvas>
-            <PerspectiveCamera makeDefault position={[0, 0, 100]}/>
-            <OrbitControls/>
+  return (
+    <div className='bg-stone-950 relative w-full'>
+      <Canvas>
+        <Camera
+          objects={props.objects}
+          selectedIdx={props.selectedIdx}
+          simulatedDatestamp={props.simulatedDatestamp}
+          sessionSettings={props.sessionSettings}
+        />
 
-            <ambientLight intensity={1}/>
+        <ambientLight intensity={1}/>
 
-            {props.objects.map((object, index) => (
-              <Satellite
-                key={index}
-                ObjID={index}
-                object={object}
-                simulatedDatestamp={props.simulatedDatestamp}
-                selectedState={props.selectedState}
-                setSelectedHandler={props.setSelectedHandler}/>
-            ))}
+        {props.objects.map((object, index) => (
+          <Satellite
+            selectedIdx={props.selectedIdx}
+            key={index}
+            ObjID={index}
+            object={object}
+            simulatedDatestamp={props.simulatedDatestamp}
+            setSelectedHandler={props.setSelectedHandler}/>
+        ))}
 
-            <Observer/>
-            <Earth/>
+        {props.selectedIdx !== -1 &&
+        <ViewingLine
+          object={props.objects[props.selectedIdx]}
+          sessionSettings={props.sessionSettings}
+          simulatedDatestamp={props.simulatedDatestamp}
+        />}
 
-            <Stars depth={400}/>
-            
-          </Canvas>
-        </div>
-    )
+        {props.selectedIdx !== -1 && props.sessionSettings.renderer.showCenterLine &&
+        <CenterLine
+          object={props.objects[props.selectedIdx]}
+          simulatedDatestamp={props.simulatedDatestamp}
+        />}
+
+        <Observer
+          sessionSettings={props.sessionSettings}
+        />
+        <Earth/>
+
+        {props.sessionSettings.renderer.showAxes &&
+        <AxesZGreen/>}
+        
+        {props.sessionSettings.renderer.showStars &&
+        <Stars depth={400}/>}
+        
+      </Canvas>
+    </div>
+  )
 }
 
 export default ThreeCanvas

@@ -506,7 +506,7 @@ function divideToPackets(raw) {
     }
 }
 
-//using local storage for now
+//adds to local storage or retrieves from local storage
 function load_data() {
     const raw = fetch_tle();
     const packet = divideToPackets(raw);

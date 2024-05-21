@@ -4,25 +4,26 @@ import { useLoader } from '@react-three/fiber'
 
 import { useState, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { getPosition, normalizePosition } from '../../utils/utils'
 import { circle } from '../../assets'
 import { Point, PointMaterial } from '@react-three/drei'
 import { Points } from '@react-three/drei'
 
+import * as utils from '../../utils/utils'
+
 const SATELLITE_DEFAULT = 'white'
-const SATELLITE_HOVERED = 'red'
+const SATELLITE_SELECTED = 'red'
 
 const Satellite = (props) => {
   const ptRef = useRef()
   const [hovered, setHovered] = useState(false)
-  var position = [0, 0, 0]
+
 
   const [pointMap] = useLoader(TextureLoader, [circle])
 
   useFrame(() => {
-    position = normalizePosition(getPosition(props.object, props.simulatedDatestamp))
-    const [x, y, z] = position
-    ptRef.current.position.set(-x, z, y)
+    //update position of satellite
+    var [x, y, z] = utils.normalizePositionXYZ(utils.positionXYZFromObject(props.object, props.simulatedDatestamp));
+    ptRef.current.position.set(x, z, -y)
   });
 
   const handleClick = (e) => {
@@ -39,9 +40,10 @@ const Satellite = (props) => {
       <PointMaterial
         transparent
         map={pointMap}
-        color={hovered ? SATELLITE_HOVERED : SATELLITE_DEFAULT}
-        size={hovered ? 20 : 10}
-        sizeAttenuation={false}/>
+        color={props.ObjID === props.selectedIdx ? SATELLITE_SELECTED : SATELLITE_DEFAULT}
+        size={(props.ObjID === props.selectedIdx || hovered) ? 20 : 10}
+        sizeAttenuation={false}
+      />
     </Points>
   )
 }

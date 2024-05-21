@@ -1,28 +1,30 @@
 import { Point, Points, PointMaterial } from "@react-three/drei";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { useLoader } from '@react-three/fiber'
+import { circle } from '../../assets'
 
-function calcPosFromLatLonRad(lat,lon,radius){
-    //theta is longitude, phi is the latitude
-  
-    const phi = lat*(Math.PI/180);
-    const theta = -lon*(Math.PI/180);
-  
-    const x = radius * Math.cos(phi) * Math.cos(theta)
-    const z = radius * Math.cos(phi) * Math.sin(theta)
-    const y = radius * Math.sin(phi)
-  
-    return [x, y, z]
-  }
+import { calcPosFromLatLonRad } from "../../utils/utils";
 
-const Observer = ({lat, lng}) => {
-  const pos = calcPosFromLatLonRad(28.615862, -81.215978, 1)
+
+const Observer = (props) => {
+  const [pointMap] = useLoader(TextureLoader, [circle])
+  const pos = calcPosFromLatLonRad(
+    props.sessionSettings.general.latitude,
+    props.sessionSettings.general.longitude,
+    50
+  )
 
   return (
+    //make point on the surface to represent the observer
     <Points>
-      <Point/>
+      <Point position={pos}/>
       <PointMaterial
-        color='blue'
-        size={2}
-        sizeAttenuation={false}/>
+        transparent
+        map={pointMap}
+        color='purple'
+        size={20}
+        sizeAttenuation={false}
+      />
     </Points>
   )
 }

@@ -19,6 +19,8 @@ import settingsBtn from './svg/settings-svgrepo-com.svg'
 import aboutBtn from './svg/about-svgrepo-com.svg'
 import chevronRight from './svg/chevron-right-svgrepo-com.svg'
 
+import galileoLogo from './galileoLogo.png';
+
 export {
     logo,
     circle,
@@ -38,5 +40,7 @@ export {
 
     settingsBtn,
     aboutBtn,
-    chevronRight
+    chevronRight,
+
+    galileoLogo
 }
