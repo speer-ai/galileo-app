@@ -1,0 +1,40 @@
+# Galileo Tracker
+
+![demoPicture](demoPic.png)
+
+Galileo is a satellite tracker inspired by sites such as [SatelliteTracker3D](https://satellitetracker3d.com/), [StarlinkMap](https://satellitemap.space/), and [KeepTrack](https://github.com/thkruz/keeptrack.space). It is designed for flexibility with the code, and a smooth user experience in mind.
+
+Galileo is built using ES2020 and Vite. To run locally, install git and node first.
+
+# Set up a Local Copy
+
+```bash
+git clone https://github.com/speer-ai/galileo-app         # Clone files to local
+cd ./galileo-app/                                         # Switch into the directory.
+npm install                                               # Install dependencies.
+```
+
+then run either
+
+```bash
+npm run dev
+```
+
+or 
+
+```bash
+npm run build                                             # Build the project.
+npm start                                                 # Start the server.
+```
+
+to start a copy.
+
+# Interface and Usage
+
+Galileo displays a fullscreen rendering of earth and sattelites using [@react-three-fiber](https://github.com/pmndrs/react-three-fiber) and [Tailwind.css](https://tailwindcss.com/) to style the page. Galileo allows for dynamic date manipulation and provides many keyboard shortcuts for users to quickly navigate between objects.
+
+More updates will be added as necessary.
+
+# Version
+
+Galileo v1.2
