@@ -1,4 +1,3 @@
-import logo from './galileo.webp';
 import circle from './circle.png';
 
 import earthMapSimple from './earth/earthMap4K.png';
@@ -19,10 +18,9 @@ import settingsBtn from './svg/settings-svgrepo-com.svg'
 import aboutBtn from './svg/about-svgrepo-com.svg'
 import chevronRight from './svg/chevron-right-svgrepo-com.svg'
 
-import galileoLogo from './galileoLogo.png';
+import galileoBanner from './galileo_banner.png';
 
 export {
-    logo,
     circle,
 
     earthNormal,
@@ -42,5 +40,5 @@ export {
     aboutBtn,
     chevronRight,
 
-    galileoLogo
+    galileoBanner
 }

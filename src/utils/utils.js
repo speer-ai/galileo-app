@@ -1,73 +1,82 @@
 import * as satlib from 'satellite.js'
+import { radToDeg } from 'three/src/math/MathUtils.js';
 
 const EARTH_RADIUS_KM = 6371.0;
-const THREE_ADJ_FACTOR = 50;
+const EARTH_RADIUS_SIM = 50;
 
+//============================= SATELLITE UTILS ========================================//
 
-//returns dict
-function getPositionECI(object, simulatedDatestamp) {
+//lat lng degrees, ht km
+function getObjLatLngHt(object, simulatedDatestamp) {
   const satrec = satlib.twoline2satrec(object.line1, object.line2);
   const positionAndVelocity = satlib.propagate(satrec, simulatedDatestamp);
-  return positionAndVelocity.position;
-}
+  const posECI = positionAndVelocity.position;
 
-//returns dict
-function lngLatHeightToXYZ(longitude, latitude, height) {
-  const r = EARTH_RADIUS_KM + height;
-  const x = r * Math.cos(latitude) * Math.cos(longitude);
-  const y = r * Math.cos(latitude) * Math.sin(longitude);
-  const z = r * Math.sin(latitude);
+  const gmst = satlib.gstime(simulatedDatestamp);
+  const positionGd = satlib.eciToGeodetic(posECI, gmst);
+
   return {
-    x: x,
-    y: y,
-    z: z
+    latitude: satlib.degreesLat(positionGd.latitude),
+    longitude: satlib.degreesLong(positionGd.longitude),
+    height: positionGd.height
   };
 }
 
-//returns dict
-function positionXYZFromObject(object, simulatedDatestamp) {
-  const positionECI = getPositionECI(object, simulatedDatestamp);
-  const gmst = satlib.gstime(simulatedDatestamp);
-  const positionGd = satlib.eciToGeodetic(positionECI, gmst)
-  return lngLatHeightToXYZ(positionGd.longitude, positionGd.latitude, positionGd.height)
+//this function is necessary since the globe is scaled up
+//and the z axis is not 'up' the y axis is
+//takes in degrees, ht is km
+function latLngHtToScreenCoords( latLngHt ) {
+  const r = EARTH_RADIUS_SIM * (1 + latLngHt.height / EARTH_RADIUS_KM);
+  const latRad = latLngHt.latitude * Math.PI / 180;
+  const lonRad = latLngHt.longitude * Math.PI / 180;
+
+
+  const x = r * Math.cos(latRad) * Math.cos(lonRad);
+  const y = r * Math.cos(latRad) * Math.sin(lonRad);
+  const z = r * Math.sin(latRad);
+
+  return [x, z, -y];
 }
 
-//returns list
-function normalizePositionXYZ(position) {
-  return [
-    position.x / EARTH_RADIUS_KM * THREE_ADJ_FACTOR,
-    position.y / EARTH_RADIUS_KM * THREE_ADJ_FACTOR,
-    position.z / EARTH_RADIUS_KM * THREE_ADJ_FACTOR
-  ];
-}
+function screenCoordsToLatLngHt( screenCoords ) {
+  const x = screenCoords[0];
+  const y = -screenCoords[2];
+  const z = screenCoords[1];
 
-function XYZtoScreenCoords(pos) {
-  return [pos[0], pos[2], -pos[1]];
-}
+  const r = Math.sqrt(x * x + y * y + z * z);
+  const latRad = Math.asin(z / r);
+  const lonRad = Math.atan2(y, x);
 
-function positionECItoLatLonHeight(positionECI, gmst) {
-  const positionGd = satlib.eciToGeodetic(positionECI, gmst);
+  const lat = latRad * 180 / Math.PI;
+  const lon = lonRad * 180 / Math.PI;
+
   return {
-    longitude: satlib.degreesLong(positionGd.longitude),
-    latitude: satlib.degreesLat(positionGd.latitude),
-    height: positionGd.height
-  }
+    latitude: lat,
+    longitude: lon,
+    height: r - EARTH_RADIUS_SIM
+  };
 }
 
-// =====================================================================================
+//============================== SUN UTILS =========================================//
 
-function calcPosFromLatLonRad(lat,lon,radius){
-  //theta is longitude, phi is the latitude
+function fractionOfYearCompleted(datestamp) {
+  const year = datestamp.getUTCFullYear();
+  const startOfYear = new Date(Date.UTC(year, 0, 1));
+  const endOfYear = new Date(Date.UTC(year + 1, 0, 1));
 
-  const phi = lat*(Math.PI/180);
-  const theta = -lon*(Math.PI/180);
-
-  const x = radius * Math.cos(phi) * Math.cos(theta)
-  const z = radius * Math.cos(phi) * Math.sin(theta)
-  const y = radius * Math.sin(phi)
-
-  return [x, y, z]
+  return (datestamp - startOfYear) / (endOfYear - startOfYear);
 }
+
+function fractionOfDayCompleted(datestamp) {
+  const dayStart = new Date(datestamp);
+  dayStart.setUTCHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setUTCDate(dayEnd.getUTCDate() + 1);
+
+  return (datestamp - dayStart) / (dayEnd - dayStart);
+}
+
+//============================= OTHER UTILS ========================================//
 
 function roundToDecimal(num, decimalPlaces) {
   const factor = Math.pow(10, decimalPlaces);
@@ -82,17 +91,15 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export default roundToDecimal;
+export default zeroPad;
 
 export {
-  getPositionECI,
-  lngLatHeightToXYZ,
-  positionXYZFromObject,
-  normalizePositionXYZ,
-  positionECItoLatLonHeight,
-  XYZtoScreenCoords,
+  getObjLatLngHt,
+  latLngHtToScreenCoords,
   roundToDecimal,
   zeroPad,
   capitalizeFirstLetter,
-  calcPosFromLatLonRad
+  fractionOfYearCompleted,
+  fractionOfDayCompleted,
+  screenCoordsToLatLngHt
 }

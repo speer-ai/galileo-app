@@ -4,7 +4,6 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 
 import { useFrame } from '@react-three/fiber';
 import { useState, useRef } from 'react';
-import { update } from 'three/examples/jsm/libs/tween.module.js';
 
 const Camera = (props) => {
   const ref = useRef()
@@ -15,8 +14,7 @@ const Camera = (props) => {
     //handle focus on selection
     if (props.selectedIdx !== -1) {
       const obj = props.objects[props.selectedIdx]
-      var pos = utils.positionXYZFromObject(obj, props.simulatedDatestamp)
-      pos = utils.XYZtoScreenCoords(utils.normalizePositionXYZ(pos))
+      var pos = utils.latLngHtToScreenCoords( utils.getObjLatLngHt(obj, props.simulatedDatestamp) );
       
       target.set(pos[0], pos[1], pos[2])
     }
@@ -40,6 +38,8 @@ const Camera = (props) => {
       />
       <OrbitControls
         ref={ref}
+        maxDistance={500}
+        enablePan={false}
       />
     </>
   )

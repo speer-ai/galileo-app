@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { zeroPad } from '../utils/utils'
 
 import { playButton, pauseButton, fastForwardButton, rewindButton, resetButton } from '../assets'
@@ -9,40 +9,67 @@ function updateDatestamp(datestamp, speed, ups) {
 
 
 const DatePanel = (props) => {
-  const [paused, setPaused] = useState(false)
-  const [speed, setSpeed] = useState(1)
+   //keyboard event listener
+   const keyboardEventListener = (e) => {
+    switch (e.key) {
+      case 'ArrowRight':
+        handleSpeedChange('forward')
+        break
+      case 'ArrowLeft':
+        handleSpeedChange('back')
+        break
+      case 'r':
+        handleReset()
+        break
+      default:
+        break
+    }
+  }
 
-  //doubles speed each time
+  //add keyboard shortcuts
+  useEffect(() => {
+    document.body.addEventListener('keydown', keyboardEventListener);
+    return () => {
+      document.body.removeEventListener('keydown', keyboardEventListener);
+    }
+  });
+
+  //-16 -8 -4 -2 -1 0 1 2 4 8 16
   function handleSpeedChange(direction) {
-    setPaused(false)
-
+    
     if (direction === 'back')
-      if (speed === 1)
-        setSpeed(-1)
+      if (props.paused)
+        props.setSpeed(-1)
+      else if (props.speed <= 2 && props.speed > -2)
+        props.setSpeed(s => s - 1)
       else
-        setSpeed(speed * (speed < 0 ? 2 : 0.5))
-    else if (direction === 'forward')
-      if (speed === -1)
-        setSpeed(1)
-      else
-        setSpeed(speed * (speed > 0 ? 2 : 0.5))
+        props.setSpeed(props.speed * (props.speed < 0 ? 2 : 0.5))
+      else if (direction === 'forward')
+        if (props.paused)
+          props.setSpeed(1)
+        else if (props.speed < 2 && props.speed >= -2)
+          props.setSpeed(s => s + 1)
+        else
+        props.setSpeed(props.speed * (props.speed < 0 ? 0.5 : 2))
+    
+    props.setPaused(false)
   }
 
   function handleReset() {
-    props.setDatestampHandler(new Date());
-    setPaused(false);
-    setSpeed(1.0);
+    props.setSimulatedDatestamp(new Date());
+    props.setPaused(false);
+    props.setSpeed(1);
   }
 
   //increase the datestamp every second
   useEffect(() => {
     const interval = setInterval(() => {
-      if (paused) return
-      props.setDatestampHandler(updateDatestamp(props.simulatedDatestamp, speed, props.sessionSettings.renderer.updatesPerSecond))
+      if (props.paused) return
+      props.setSimulatedDatestamp(updateDatestamp(props.simulatedDatestamp, props.speed, props.sessionSettings.renderer.updatesPerSecond))
     }, 1/props.sessionSettings.renderer.updatesPerSecond)
 
     return () => clearInterval(interval)
-  }, [paused, props.simulatedDatestamp, speed])
+  }, [props])
 
   return (
     <div className='absolute flex flex-col bg-stone-800 border border-2 border-sky-700 border-1 text-bold text-white bottom-0 left-1/2 transform -translate-x-1/2 p-4 m-2 min-w-96'>
@@ -79,7 +106,7 @@ const DatePanel = (props) => {
         </button>
         <button
           className='border p-2 m-2 w-10'
-          onClick={() => setPaused(!paused)}><img className='m-auto transform scale-90 hover:scale-110 transition-transform' src={paused ? playButton : pauseButton} alt='play/pause'/>
+          onClick={() => props.setPaused(!props.paused)}><img className='m-auto transform scale-90 hover:scale-110 transition-transform' src={props.paused ? playButton : pauseButton} alt='play/pause'/>
         </button>
         <button
           className='border p-2 m-2 w-10'

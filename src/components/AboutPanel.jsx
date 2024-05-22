@@ -1,5 +1,5 @@
 import { chevronRight } from '../assets'
-import { galileoLogo } from '../assets'
+import { galileoBanner } from '../assets'
 
 const AboutPanel = (props) => {
 
@@ -12,9 +12,9 @@ const AboutPanel = (props) => {
           onClick={() => props.openPanelHandler('none')}><img className='m-auto h-full' src={chevronRight} alt='rewind'/>
       </button> 
       
-      <div className='bg-opacity-60 bg-stone-700 min-w-96'>
+      <div className='bg-opacity-60 bg-stone-700 min-w-96 overflow-scroll overflow-x-hidden'>
           <img
-            src={galileoLogo}
+            src={galileoBanner}
             alt='Galileo Logo'
             className='max-w-96 block mx-auto p-3'/>
           <h1 className='text-white text-3xl font-semibold text-center m-4 text-sky-400'>ABOUT GALILEO</h1>

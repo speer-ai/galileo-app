@@ -4,9 +4,11 @@ import ThreeCanvas from './components/ThreeCanvas'
 import FPSMeter from './utils/fpsMeter'
 import SettingsPanel from './components/SettingsPanel'
 import AboutPanel from './components/AboutPanel'
+import SpeedIndicator from './components/SpeedIndicator'
 
 import { settingsBtn } from './assets'
 import { aboutBtn } from './assets'
+import Load from './components/Load'
 
 import { Suspense } from 'react'
 import { useState, useEffect } from 'react'
@@ -22,25 +24,41 @@ const App = () => {
   const [sessionSettings, setSessionSettings] = useState(load_settings())
 
   const [selectedIdx, setSelectedIdx] = useState(NONE_SELECTED)
-  const [simulatedDatestamp, setSimulatedDatestamp] = useState(new Date())
   const [openPanel, setOpenPanel] = useState('none')
+
+  const [simulatedDatestamp, setSimulatedDatestamp] = useState(new Date())
+  const [speed, setSpeed] = useState(1)
+  const [paused, setPaused] = useState(false)
+
 
   //keyboard event listener
   const keyboardEventListener = (e) => {
     switch (e.key) {
       case 'ArrowUp':
-        setSelectedIdx(selectedIdx + 1)
+        if (selectedIdx < objects.length - 1)
+          setSelectedIdx(selectedIdx + 1)
         break
       case 'ArrowDown':
-        setSelectedIdx(selectedIdx - 1)
+        if (selectedIdx > 0)
+          setSelectedIdx(selectedIdx - 1)
         break
       case 'Escape':
         setSelectedIdx(NONE_SELECTED)
+        break
+      case ' ':
+        setPaused(!paused)
+        break
+      case 'i':
+        setOpenPanel(openPanel === 'about' ? 'none' : 'about')
+        break
+      case 's':
+        setOpenPanel(openPanel === 'settings' ? 'none' : 'settings')
         break
       default:
         break
     }
   }
+
 
   //when settings change
   useEffect(() => {
@@ -56,28 +74,41 @@ const App = () => {
     }
   });
 
+
   //building the application here
   return (
     <div className='w-full h-screen flex'>
-      <ThreeCanvas
-        objects={objects}
-        simulatedDatestamp={simulatedDatestamp}
-        selectedIdx={selectedIdx}
-        setSelectedHandler={setSelectedIdx}
-        sessionSettings={sessionSettings}/>
+      <Suspense fallback={<Load />}>
+        <ThreeCanvas
+          objects={objects}
+          simulatedDatestamp={simulatedDatestamp}
+          selectedIdx={selectedIdx}
+          setSelectedHandler={setSelectedIdx}
+          sessionSettings={sessionSettings}/>
+      </Suspense>
 
       <DatePanel
         simulatedDatestamp={simulatedDatestamp}
-        setDatestampHandler={setSimulatedDatestamp}
+        setSimulatedDatestamp={setSimulatedDatestamp}
+        speed={speed}
+        setSpeed={setSpeed}
+        paused={paused}
+        setPaused={setPaused}
         sessionSettings={sessionSettings}
         />
 
-      {selectedIdx !== NONE_SELECTED &&
-        
+      <SpeedIndicator
+        speed={speed}
+        paused={paused}
+        sessionSettings={sessionSettings}
+      />
 
+      {selectedIdx !== NONE_SELECTED &&
         <SelectedObjectInfoBox
           object={objects[selectedIdx]}
-          simulatedDatestamp={simulatedDatestamp} />}
+          simulatedDatestamp={simulatedDatestamp}
+          sessionSettings={sessionSettings}
+        />}
         
       <buttton className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
         <img

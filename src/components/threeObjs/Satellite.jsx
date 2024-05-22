@@ -22,8 +22,8 @@ const Satellite = (props) => {
 
   useFrame(() => {
     //update position of satellite
-    var [x, y, z] = utils.normalizePositionXYZ(utils.positionXYZFromObject(props.object, props.simulatedDatestamp));
-    ptRef.current.position.set(x, z, -y)
+    var [x, y, z] = utils.latLngHtToScreenCoords( utils.getObjLatLngHt( props.object, props.simulatedDatestamp ));
+    ptRef.current.position.set(x, y, z)
   });
 
   const handleClick = (e) => {

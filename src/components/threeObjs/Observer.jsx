@@ -3,21 +3,21 @@ import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from '@react-three/fiber'
 import { circle } from '../../assets'
 
-import { calcPosFromLatLonRad } from "../../utils/utils";
+import * as utils from '../../utils/utils'
 
 
 const Observer = (props) => {
   const [pointMap] = useLoader(TextureLoader, [circle])
-  const pos = calcPosFromLatLonRad(
-    props.sessionSettings.general.latitude,
-    props.sessionSettings.general.longitude,
-    50
-  )
+  const posViewer = utils.latLngHtToScreenCoords({
+		latitude: props.sessionSettings.general.latitude,
+		longitude: props.sessionSettings.general.longitude,
+		height: 50
+  })
 
   return (
     //make point on the surface to represent the observer
     <Points>
-      <Point position={pos}/>
+      <Point position={posViewer}/>
       <PointMaterial
         transparent
         map={pointMap}

@@ -6,13 +6,13 @@ const SettingsPanel = (props) => {
   return (
     <>
     {props.openPanel === 'settings' &&
-    <div className='absolute right-0 h-full flex flex-row slideIn animation-slideIn'>
+    <div className='absolute right-0 h-full flex flex-row'>
       <button
         className='p-2 mt-5 m-2 w-12 h-12 cursor-pointer transform hover:translate-x-2 transition-transform duration-300 ease-in-out'
         onClick={() => props.openPanelHandler('none')}><img className='m-auto h-full' src={chevronRight} alt='rewind'/>
       </button> 
       
-      <div className='bg-opacity-60 bg-stone-700 min-w-96'>
+      <div className='bg-opacity-60 bg-stone-700 min-w-96 overflow-scroll overflow-x-hidden'>
         <h1 className='galileoFont text-6xl text-white p-4 text-center'>SETTINGS</h1>
         
         
@@ -51,7 +51,7 @@ const SettingsPanel = (props) => {
                         newSettings[category][setting] = parseFloat(e.target.value);
                         props.setSessionSettings(newSettings);
                       }}
-                      className='bg-stone-800 text-white cursor-text text-right p-1 rounded'/>}
+                      className='bg-stone-800 text-white cursor-text text-center p-1 rounded'/>}
                 </div>
                 )
               })}

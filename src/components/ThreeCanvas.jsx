@@ -1,6 +1,6 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Line, Stars } from '@react-three/drei'
+import { Stars } from '@react-three/drei'
 import * as THREE from 'three'
 
 import Earth from './threeObjs/Earth'
@@ -9,25 +9,14 @@ import Observer from './threeObjs/Observer'
 import Camera from './threeObjs/Camera'
 import ViewingLine from './threeObjs/ViewingLine'
 import CenterLine from './threeObjs/CenterLine'
+import Orbit from './threeObjs/Orbit'
+import AxesZGreen from './threeObjs/AxesZGreen'
+import HexObj from './threeObjs/HexObj'
+import Sun from './threeObjs/Sun'
 
-const AxesZGreen = () => {
-  return (
-    <group>
-      <mesh position={[100, 0, 0]} rotation={[0, 0, Math.PI/2]}>
-        <cylinderGeometry args={[1, 1, 200, 32]}/>
-        <meshBasicMaterial color='red'/>
-      </mesh>
-      <mesh position={[0, 100, 0]} rotation={[0, Math.PI/2, 0]}>
-        <cylinderGeometry args={[1, 1, 200, 32]}/>
-        <meshBasicMaterial color='blue'/>
-      </mesh>
-      <mesh position={[0, 0, 100]} rotation={[Math.PI/2, 0, 0]}>
-        <cylinderGeometry args={[1, 1, 200, 32]}/>
-        <meshBasicMaterial color='green'/>
-      </mesh>
-    </group>
-  )
-}
+import { Suspense } from 'react'
+
+const NONE_SELECTED = -1
 
 const ThreeCanvas = (props) => {
   return (
@@ -40,7 +29,13 @@ const ThreeCanvas = (props) => {
           sessionSettings={props.sessionSettings}
         />
 
-        <ambientLight intensity={1}/>
+        <ambientLight
+          intensity={props.sessionSettings.scene.doDayLightCycle ? 0.3 : 1.2}
+        />
+        {props.sessionSettings.scene.doDayLightCycle &&
+        <Sun
+          simulatedDatestamp={props.simulatedDatestamp}
+        />}
 
         {props.objects.map((object, index) => (
           <Satellite
@@ -52,28 +47,42 @@ const ThreeCanvas = (props) => {
             setSelectedHandler={props.setSelectedHandler}/>
         ))}
 
-        {props.selectedIdx !== -1 &&
+        {props.selectedIdx !== NONE_SELECTED &&
         <ViewingLine
           object={props.objects[props.selectedIdx]}
           sessionSettings={props.sessionSettings}
           simulatedDatestamp={props.simulatedDatestamp}
         />}
 
-        {props.selectedIdx !== -1 && props.sessionSettings.renderer.showCenterLine &&
+        {props.selectedIdx !== NONE_SELECTED && props.sessionSettings.scene.showCenterLine &&
         <CenterLine
           object={props.objects[props.selectedIdx]}
           simulatedDatestamp={props.simulatedDatestamp}
         />}
 
+        {props.selectedIdx !== NONE_SELECTED && props.sessionSettings.scene.showOrbits &&
+        <Orbit
+          object={props.objects[props.selectedIdx]}
+          simulatedDatestamp={props.simulatedDatestamp}
+          sessionSettings={props.sessionSettings}
+        />}
+
         <Observer
           sessionSettings={props.sessionSettings}
         />
-        <Earth/>
+        <Earth
+          sessionSettings={props.sessionSettings}
+        />
+        {props.sessionSettings.hexasphere.showHexasphere &&
+        <HexObj
+          subdivisions={props.sessionSettings.hexasphere.subdivisions}
+          tileSize={props.sessionSettings.hexasphere.tileSize}
+        />}
 
         {props.sessionSettings.renderer.showAxes &&
         <AxesZGreen/>}
         
-        {props.sessionSettings.renderer.showStars &&
+        {props.sessionSettings.scene.showStars &&
         <Stars depth={400}/>}
         
       </Canvas>
