@@ -5,7 +5,7 @@ const Hotkey = ({hotkey, info}) => {
   return (
     <>
       <div className='pl-6 m-2 '>
-        <span className='text-white bg-stone-200 text-sm text-stone-900 font-bold p-2 rounded-full'>{hotkey}</span>
+        <span className='text-stone-800 bg-stone-200 text-sm text-stone-900 font-bold p-2 rounded-full'>{hotkey}</span>
       </div>
       <p className='text-white my-auto text-sky-400 text-sm font-semibold'>{info}</p>
     </>
