@@ -4,7 +4,7 @@ const defaultSettings = {
         'longitude': 0,
     },
     'overlay': {
-        'showFPSGraph': true,
+        'showFPSGraph': false,
         'alwaysShowSpeed': false,
     },
     'renderer': {
@@ -20,6 +20,11 @@ const defaultSettings = {
         'animateClouds': true,
         'cloudOpacity': 0.6,
         'doDayLightCycle': true,
+    },
+    'orbit': {
+        'showOrbits': true,
+        'orbitSteps': 200,
+        'orbitDiffMillis': 1000 * 30,
     },
     'hexasphere': {
         'showHexasphere': true,

@@ -15,8 +15,7 @@ import HexObj from './threeObjs/HexObj'
 import Sun from './threeObjs/Sun'
 
 import { Suspense } from 'react'
-
-const NONE_SELECTED = -1
+import { NONE_SELECTED } from '../constants'
 
 const ThreeCanvas = (props) => {
   return (
@@ -60,11 +59,12 @@ const ThreeCanvas = (props) => {
           simulatedDatestamp={props.simulatedDatestamp}
         />}
 
-        {props.selectedIdx !== NONE_SELECTED && props.sessionSettings.scene.showOrbits &&
+        {props.selectedIdx !== NONE_SELECTED && props.sessionSettings.orbit.showOrbits &&
         <Orbit
           object={props.objects[props.selectedIdx]}
           simulatedDatestamp={props.simulatedDatestamp}
-          sessionSettings={props.sessionSettings}
+          orbitSteps={props.sessionSettings.orbit.orbitSteps}
+          diffMillis={props.sessionSettings.orbit.orbitDiffMillis}          
         />}
 
         <Observer

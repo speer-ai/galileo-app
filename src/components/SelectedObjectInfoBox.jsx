@@ -44,8 +44,8 @@ const SelectedObjectInfoBox = (props) => {
   var lookAngles = satlib.ecfToLookAngles(observerGd, posECF)
 
   return (
-    <div className='absolute text-[16px] text-red-600 bottom-0 left-0 p-2'>
-      <p className='font-semibold text-[18px]'>{props.object.name}</p>
+    <div className='absolute text-[14px] text-red-600 bottom-0 left-0 p-2'>
+      <p className='font-semibold text-[16px]'>{props.object.name}</p>
       <p>Latitude: {utils.roundToDecimal(satlib.degreesLat(positionGd.latitude), 3) + '\u00B0'}</p>
       <p>Longitude: {utils.roundToDecimal(satlib.degreesLong(positionGd.longitude), 3) + '\u00B0'}</p>
       <p>Height: {utils.roundToDecimal(positionGd.height, 2)}km</p>

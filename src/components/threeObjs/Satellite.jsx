@@ -10,8 +10,8 @@ import { Points } from '@react-three/drei'
 
 import * as utils from '../../utils/utils'
 
-const SATELLITE_DEFAULT = 'white'
-const SATELLITE_SELECTED = 'red'
+import { SATELLITE_DEFAULT } from '../../constants'
+import { SATELLITE_SELECTED } from '../../constants'
 
 const Satellite = (props) => {
   const ptRef = useRef()

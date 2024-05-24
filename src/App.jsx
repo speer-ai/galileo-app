@@ -16,7 +16,7 @@ import { useState, useEffect } from 'react'
 import load_data from './services/tle_fetch'
 import load_settings from './settings/settings'
 
-const NONE_SELECTED = -1
+import { NONE_SELECTED } from './constants'
 
 const App = () => {
   //state
@@ -136,7 +136,7 @@ const App = () => {
         openPanelHandler={setOpenPanel}/>
 
       {sessionSettings.overlay.showFPSGraph &&
-      <div className='absolute l-0'>
+      <div className='absolute left-0 top-0'>
         <FPSMeter />
       </div>}
     </div>

@@ -1,0 +1,15 @@
+const NONE_SELECTED = -1
+const SATELLITE_DEFAULT = 'white'
+const SATELLITE_SELECTED = 'red'
+const ORBIT_DEFAULT = 'green'
+const HEXASPHERE_DEFAULT = 'skyblue'
+const OBSERVER_DEFAULT = 'magenta'
+
+export {
+    NONE_SELECTED,
+    SATELLITE_DEFAULT,
+    SATELLITE_SELECTED,
+    ORBIT_DEFAULT,
+    HEXASPHERE_DEFAULT,
+    OBSERVER_DEFAULT
+}

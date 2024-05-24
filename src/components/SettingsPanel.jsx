@@ -29,7 +29,7 @@ const SettingsPanel = (props) => {
                 return (
                   <div
                     className='flex flex-row p-2 justify-between'>
-                    <label htmlFor={setting} className='text-white cursor-pointer mr-3 my-auto'>{setting}</label>
+                    <label htmlFor={setting} className='text-white cursor-pointer mr-3 my-auto text-sm'>{setting}</label>
                     {typeof props.sessionSettings[category][setting] === 'boolean' &&
                     <input
                       id={setting}
@@ -51,7 +51,7 @@ const SettingsPanel = (props) => {
                         newSettings[category][setting] = parseFloat(e.target.value);
                         props.setSessionSettings(newSettings);
                       }}
-                      className='bg-stone-800 text-white cursor-text text-center p-1 rounded'/>}
+                      className='bg-stone-800 text-white cursor-text text-center p-1 rounded text-sm'/>}
                 </div>
                 )
               })}

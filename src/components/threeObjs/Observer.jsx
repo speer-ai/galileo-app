@@ -5,6 +5,8 @@ import { circle } from '../../assets'
 
 import * as utils from '../../utils/utils'
 
+import { OBSERVER_DEFAULT } from "../../constants";
+
 
 const Observer = (props) => {
   const [pointMap] = useLoader(TextureLoader, [circle])
@@ -21,7 +23,7 @@ const Observer = (props) => {
       <PointMaterial
         transparent
         map={pointMap}
-        color='purple'
+        color={OBSERVER_DEFAULT}
         size={20}
         sizeAttenuation={false}
       />

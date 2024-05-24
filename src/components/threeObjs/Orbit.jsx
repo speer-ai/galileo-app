@@ -2,14 +2,13 @@ import * as utils from '../../utils/utils';
 import * as THREE from 'three';
 import { Line } from '@react-three/drei';
 
+import { ORBIT_DEFAULT } from '../../constants';
+
 //currently only does circular orbits just to visualize for now
 const Orbit = (props) => {
-  const orbPropSteps = 200
-  const orbPropDifMillis = 1000 * 30
-
   const orbitPoints = []
-  for (let i = 0; i < orbPropSteps; i++) {
-    const curDate = new Date(props.simulatedDatestamp.getTime() + i * orbPropDifMillis)
+  for (let i = 0; i < props.orbitSteps; i++) {
+    const curDate = new Date(props.simulatedDatestamp.getTime() + i * props.diffMillis)
     const pos = utils.latLngHtToScreenCoords( utils.getObjLatLngHt( props.object, curDate ));
     orbitPoints.push(new THREE.Vector3(pos[0], pos[1], pos[2]))
   }
@@ -17,7 +16,7 @@ const Orbit = (props) => {
   return (
     <Line
       points={orbitPoints}
-      color='green'
+      color={ORBIT_DEFAULT}
       linewidth={2}
     />
   )

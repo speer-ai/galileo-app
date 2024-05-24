@@ -5,6 +5,8 @@ import { memo } from "react";
 import * as THREE from "three";
 import * as utils from "../../utils/utils.js";
 
+import { HEXASPHERE_DEFAULT } from "../../constants.js";
+
 //generously provided by https://www.robscanlon.com/hexasphere/
 
 //using memo to prevent re-rendering
@@ -27,7 +29,7 @@ const HexObj = memo((props) => {
         <Line
           key={index}
           points={getBoundary(tile)}
-          color='skyblue'
+          color={HEXASPHERE_DEFAULT}
           linewidth={1}
         />
       ))}

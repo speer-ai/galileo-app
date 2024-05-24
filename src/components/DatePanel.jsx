@@ -75,27 +75,27 @@ const DatePanel = (props) => {
     <div className='absolute flex flex-col bg-stone-800 border border-2 border-sky-700 border-1 text-bold text-white bottom-0 left-1/2 transform -translate-x-1/2 p-4 m-2 min-w-96'>
       <div className='flex flex-row justify-center gap-4'>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 text-lg font-bold rounded mx-auto w-18 text-center'>{props.simulatedDatestamp.getUTCFullYear()}</span>
+          <span className='bg-stone-700 p-2 text-md font-bold rounded mx-auto w-18 text-center'>{props.simulatedDatestamp.getUTCFullYear()}</span>
           <p className='text-stone-500 text-xs mx-auto pt-2'>yr</p>
         </div>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 font-bold text-lg rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCMonth())}</span>
+          <span className='bg-stone-700 p-2 font-bold text-md rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCMonth()+1)}</span>
           <p className='text-stone-500 text-xs mx-auto pt-2'>mt</p>
         </div>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 font-bold text-lg rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCDate())}</span>
+          <span className='bg-stone-700 p-2 font-bold text-md rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCDate())}</span>
           <p className='text-stone-500 text-xs mx-auto pt-2'>dy</p>
         </div>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 font-bold text-lg rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCHours())}</span>
+          <span className='bg-stone-700 p-2 font-bold text-md rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCHours())}</span>
           <p className='text-stone-500 text-xs mx-auto pt-2'>hr</p>
         </div>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 font-bold text-lg rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCMinutes())}</span>
+          <span className='bg-stone-700 p-2 font-bold text-md rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCMinutes())}</span>
           <p className='text-stone-500 text-xs mx-auto pt-2'>min</p>
         </div>
         <div className='flex flex-col'>
-          <span className='bg-stone-700 p-2 font-bold text-lg rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCSeconds())}</span>
+          <span className='bg-stone-700 p-2 font-bold text-md rounded mx-auto w-10 text-center'>{zeroPad(props.simulatedDatestamp.getUTCSeconds())}</span>
           <p className='text-stone-500 text-xs text-center pt-2'>sec</p>
         </div>
       </div>
