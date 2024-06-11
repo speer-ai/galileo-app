@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import * as utils from '../utils/utils'
 import * as satlib from 'satellite.js'
+import { NONE_SELECTED } from '../constants'
 
 const SelectedObjectInfoBox = (props) => {
   const satrec = satlib.twoline2satrec(props.object.line1, props.object.line2)
@@ -45,6 +46,10 @@ const SelectedObjectInfoBox = (props) => {
 
   return (
     <div className='absolute text-[14px] text-red-600 bottom-0 left-0 p-2'>
+      <button
+        className='font-semibold p-2 border rounded-full pl-3 text-red-800 pr-3 inline-block mb-5 border-red-800 border-2 transition ease-in-out hover:bg-red-500 hover:text-white hover:border-white hover:border-red-500 hover:cursor-pointer'
+        onClick={() => props.setSelectedIdx(NONE_SELECTED)}>RECENTER EARTH
+      </button>
       <p className='font-semibold text-[16px]'>{props.object.name}</p>
       <p>Latitude: {utils.roundToDecimal(satlib.degreesLat(positionGd.latitude), 3) + '\u00B0'}</p>
       <p>Longitude: {utils.roundToDecimal(satlib.degreesLong(positionGd.longitude), 3) + '\u00B0'}</p>

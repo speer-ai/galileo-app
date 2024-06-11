@@ -10,7 +10,7 @@ const defaultSettings = {
     'renderer': {
         'cameraFOV': 45,
         'showAxes': false,
-        'updatesPerSecond': 1000,
+        'updatesPerSecond': 100,
     },
     'scene': {
         'showStars': true,
@@ -27,7 +27,7 @@ const defaultSettings = {
         'orbitDiffMillis': 1000 * 30,
     },
     'hexasphere': {
-        'showHexasphere': true,
+        'showHexasphere': false,
         'subdivisions': 10,
         'tileSize': 0.95,
     }

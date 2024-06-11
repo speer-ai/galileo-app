@@ -20,15 +20,28 @@ import { NONE_SELECTED } from './constants'
 
 const App = () => {
   //state
-  const [objects, setObjects] = useState(load_data().entries)
-  const [sessionSettings, setSessionSettings] = useState(load_settings())
+  const [objects, setObjects] = useState()
+  const [sessionSettings, setSessionSettings] = useState(null)
 
   const [selectedIdx, setSelectedIdx] = useState(NONE_SELECTED)
   const [openPanel, setOpenPanel] = useState('none')
 
-  const [simulatedDatestamp, setSimulatedDatestamp] = useState(new Date())
+  const [simulatedDatestamp, setSimulatedDatestamp] = useState(null)
   const [speed, setSpeed] = useState(1)
   const [paused, setPaused] = useState(false)
+
+  //fill defualts when component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await load_data()
+      console.log('dataHere', data.entries)
+      setObjects(data.entries)
+    }
+
+    fetchData()
+    setSimulatedDatestamp(new Date());
+    setSessionSettings(load_settings());
+  }, [])
 
 
   //keyboard event listener
@@ -79,14 +92,16 @@ const App = () => {
   return (
     <div className='w-full h-screen flex'>
       <Suspense fallback={<Load />}>
+        {objects && sessionSettings && simulatedDatestamp &&
         <ThreeCanvas
           objects={objects}
           simulatedDatestamp={simulatedDatestamp}
           selectedIdx={selectedIdx}
           setSelectedHandler={setSelectedIdx}
-          sessionSettings={sessionSettings}/>
+          sessionSettings={sessionSettings}/>}
       </Suspense>
 
+      {simulatedDatestamp && sessionSettings &&
       <DatePanel
         simulatedDatestamp={simulatedDatestamp}
         setSimulatedDatestamp={setSimulatedDatestamp}
@@ -95,16 +110,18 @@ const App = () => {
         paused={paused}
         setPaused={setPaused}
         sessionSettings={sessionSettings}
-        />
+        />}
 
+      {sessionSettings &&
       <SpeedIndicator
         speed={speed}
         paused={paused}
         sessionSettings={sessionSettings}
-      />
+      />}
 
       {selectedIdx !== NONE_SELECTED &&
         <SelectedObjectInfoBox
+          setSelectedIdx={setSelectedIdx}
           object={objects[selectedIdx]}
           simulatedDatestamp={simulatedDatestamp}
           sessionSettings={sessionSettings}
@@ -135,7 +152,7 @@ const App = () => {
         openPanel={openPanel}
         openPanelHandler={setOpenPanel}/>
 
-      {sessionSettings.overlay.showFPSGraph &&
+      {sessionSettings && sessionSettings.overlay.showFPSGraph &&
       <div className='absolute left-0 top-0'>
         <FPSMeter />
       </div>}

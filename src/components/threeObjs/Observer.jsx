@@ -1,7 +1,7 @@
 import { Point, Points, PointMaterial } from "@react-three/drei";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from '@react-three/fiber'
-import { circle } from '../../assets'
+import { hex } from '../../assets'
 
 import * as utils from '../../utils/utils'
 
@@ -9,7 +9,7 @@ import { OBSERVER_DEFAULT } from "../../constants";
 
 
 const Observer = (props) => {
-  const [pointMap] = useLoader(TextureLoader, [circle])
+  const [pointMap] = useLoader(TextureLoader, [hex])
   const posViewer = utils.latLngHtToScreenCoords({
 		latitude: props.sessionSettings.general.latitude,
 		longitude: props.sessionSettings.general.longitude,

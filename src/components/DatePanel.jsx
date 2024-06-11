@@ -3,8 +3,8 @@ import { zeroPad } from '../utils/utils'
 
 import { playButton, pauseButton, fastForwardButton, rewindButton, resetButton } from '../assets'
 
-function updateDatestamp(datestamp, speed, ups) {
-  return new Date(datestamp.getTime() + speed * 15000/ups)
+function updateDatestamp(datestamp, speed) {
+  return new Date(datestamp.getTime() + speed * 2)
 }
 
 
@@ -65,8 +65,8 @@ const DatePanel = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (props.paused) return
-      props.setSimulatedDatestamp(updateDatestamp(props.simulatedDatestamp, props.speed, props.sessionSettings.renderer.updatesPerSecond))
-    }, 1/props.sessionSettings.renderer.updatesPerSecond)
+      props.setSimulatedDatestamp(updateDatestamp(props.simulatedDatestamp, props.speed))
+    })
 
     return () => clearInterval(interval)
   }, [props])

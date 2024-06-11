@@ -4,7 +4,7 @@ import { useLoader } from '@react-three/fiber'
 
 import { useState, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { circle } from '../../assets'
+import { hex } from '../../assets'
 import { Point, PointMaterial } from '@react-three/drei'
 import { Points } from '@react-three/drei'
 
@@ -18,7 +18,7 @@ const Satellite = (props) => {
   const [hovered, setHovered] = useState(false)
 
 
-  const [pointMap] = useLoader(TextureLoader, [circle])
+  const [pointMap] = useLoader(TextureLoader, [hex])
 
   useFrame(() => {
     //update position of satellite

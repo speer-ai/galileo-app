@@ -91,6 +91,19 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function randomFromArr(arr, num) {
+  const result = new Array(num);
+  let len = arr.length;
+  const taken = new Array(len);
+  if (num > len) return arr;
+  while (num--) {
+    const x = Math.floor(Math.random() * len);
+    result[num] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}
+
 export default zeroPad;
 
 export {
@@ -101,5 +114,6 @@ export {
   capitalizeFirstLetter,
   fractionOfYearCompleted,
   fractionOfDayCompleted,
-  screenCoordsToLatLngHt
+  screenCoordsToLatLngHt,
+  randomFromArr
 }

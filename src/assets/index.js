@@ -1,4 +1,4 @@
-import circle from './circle.png';
+import hex from './hex.png';
 
 import earthMapSimple from './earth/earthMap4K.png';
 
@@ -21,7 +21,7 @@ import chevronRight from './svg/chevron-right-svgrepo-com.svg'
 import galileoBanner from './galileo_banner.png';
 
 export {
-    circle,
+    hex,
 
     earthNormal,
     earthClouds,

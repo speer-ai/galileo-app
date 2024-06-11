@@ -13,6 +13,8 @@ const Camera = (props) => {
   useFrame(() => {
     //handle focus on selection
     if (props.selectedIdx !== -1) {
+      console.log('props.objects', props.objects)
+      console.log('props.selectedIdx', props.selectedIdx)
       const obj = props.objects[props.selectedIdx]
       var pos = utils.latLngHtToScreenCoords( utils.getObjLatLngHt(obj, props.simulatedDatestamp) );
       
