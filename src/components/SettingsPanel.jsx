@@ -1,7 +1,32 @@
 import { chevronRight } from '../assets'
 import { capitalizeFirstLetter } from '../utils/utils'
 
+function getBrowserLocation(cb) {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser')
+    return
+  }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      cb({
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      })
+    },
+    () => alert('Unable to retrieve your location')
+  )
+}
+
 const SettingsPanel = (props) => {
+
+  function handleUseBrowserLocation() {
+    getBrowserLocation(({ latitude, longitude }) => {
+      const newSettings = { ...props.sessionSettings }
+      newSettings.general.latitude = latitude
+      newSettings.general.longitude = longitude
+      props.setSessionSettings(newSettings)
+    })
+  }
 
   return (
     <>
@@ -52,9 +77,15 @@ const SettingsPanel = (props) => {
                         props.setSessionSettings(newSettings);
                       }}
                       className='bg-stone-800 text-white cursor-text text-center p-1 rounded text-sm'/>}
-                </div>
+                  </div>
                 )
               })}
+              {category === 'general' &&
+                <button
+                  className='bg-stone-800 text-white p-2 m-2 rounded text-sm hover:bg-stone-600'
+                  onClick={handleUseBrowserLocation}>
+                  Use Browser Location
+                </button>}
             </div>
           )
         })}
