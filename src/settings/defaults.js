@@ -17,7 +17,6 @@ const defaultSettings = {
         'animateClouds': true,
         'showCenterLine': true,
         'showOrbits': true,
-        'animateClouds': true,
         'cloudOpacity': 0.6,
         'doDayLightCycle': true,
     },
