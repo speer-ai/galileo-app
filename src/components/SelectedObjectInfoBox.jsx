@@ -11,6 +11,20 @@ const SelectedObjectInfoBox = (props) => {
   var gmst = satlib.gstime(props.simulatedDatestamp)
   var positionGd = satlib.eciToGeodetic(posECI, gmst)
 
+  const [passList, setPassList] = useState([])
+
+  useEffect(() => {
+    const passes = utils.predictPasses(
+      props.object,
+      props.sessionSettings.general.latitude,
+      props.sessionSettings.general.longitude,
+      new Date(),
+      24,
+      1
+    )
+    setPassList(passes.slice(0, 3))
+  }, [props.object, props.sessionSettings])
+
   function readTLE() {
     var tle1 = props.object.line1.split(/\s+/)
     var tle2 = props.object.line2.split(/\s+/)
@@ -66,6 +80,17 @@ const SelectedObjectInfoBox = (props) => {
       <p>Arg of Perigee: {readTLE().argOfPerigee + '\u00B0'}</p>
       <p>Mean Anomaly: {readTLE().meanAnomaly + '\u00B0'}</p>
       <p>Mean Motion: {readTLE().meanMotion}</p>
+      {passList.length > 0 &&
+        <div className='mt-2'>
+          <p className='font-semibold'>Upcoming Passes:</p>
+          {passList.map((p, idx) => (
+            <div key={idx} className='ml-2'>
+              <p>Start: {p.start.toUTCString()}</p>
+              <p>End: {p.end.toUTCString()}</p>
+              <p>Max Elev: {utils.roundToDecimal(p.maxElevation, 1)}&#176; at {p.maxTime.toUTCString()}</p>
+            </div>
+          ))}
+        </div>}
     </div>
   )
 }
