@@ -34,6 +34,8 @@ to start a copy.
 ## Interface and Usage
 Galileo displays a fullscreen rendering of earth and sattelites using [@react-three-fiber](https://github.com/pmndrs/react-three-fiber) and [Tailwind.css](https://tailwindcss.com/) to style the page. Galileo allows for past & future date manipulation and provides many keyboard shortcuts for users to navigate between objects. Galileo features other visuals such as orbit displays, a dynamic hexasphere, and more.
 
+The Settings panel lets you enter your latitude and longitude manually. You can also click **Use Browser Location** to automatically populate these coordinates from your web browser if geolocation is available.
+
 ## Possible Future Updates
 Galileo may be updated in the future to allow use with live sensors & data and/or the ability to control local communication devices.
 
@@ -53,5 +55,4 @@ View source code on [Github](https://github.com/speer-ai/galileo-app)
 - Switch time zone?
 - Some calculations redundant
 - Can't enter date manually into panel
-- Request location from user automatically?
 - Switch between ECI / ECF coordinates
