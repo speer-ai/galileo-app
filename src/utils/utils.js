@@ -57,6 +57,53 @@ function screenCoordsToLatLngHt( screenCoords ) {
   };
 }
 
+//calculate satellite passes over a location
+function predictPasses(object, latitude, longitude, startDate, durationHours = 24, stepMinutes = 1) {
+  const satrec = satlib.twoline2satrec(object.line1, object.line2);
+  const observerGd = {
+    latitude: satlib.degreesToRadians(latitude),
+    longitude: satlib.degreesToRadians(longitude),
+    height: 0,
+  };
+  const step = stepMinutes * 60 * 1000;
+  const end = new Date(startDate.getTime() + durationHours * 60 * 60 * 1000);
+  const passes = [];
+  let inPass = false;
+  let passStart = null;
+  let maxEl = -90;
+  let maxTime = null;
+
+  for (let t = new Date(startDate.getTime()); t <= end; t = new Date(t.getTime() + step)) {
+    const pv = satlib.propagate(satrec, t);
+    if (!pv.position) continue;
+    const gmst = satlib.gstime(t);
+    const ecf = satlib.eciToEcf(pv.position, gmst);
+    const look = satlib.ecfToLookAngles(observerGd, ecf);
+    const elev = radToDeg(look.elevation);
+
+    if (elev > 0) {
+      if (!inPass) {
+        inPass = true;
+        passStart = new Date(t);
+        maxEl = elev;
+        maxTime = new Date(t);
+      } else if (elev > maxEl) {
+        maxEl = elev;
+        maxTime = new Date(t);
+      }
+    } else if (inPass) {
+      passes.push({ start: passStart, end: new Date(t), maxElevation: maxEl, maxTime });
+      inPass = false;
+    }
+  }
+
+  if (inPass) {
+    passes.push({ start: passStart, end, maxElevation: maxEl, maxTime });
+  }
+
+  return passes;
+}
+
 //============================== SUN UTILS =========================================//
 
 function fractionOfYearCompleted(datestamp) {
@@ -115,5 +162,6 @@ export {
   fractionOfYearCompleted,
   fractionOfDayCompleted,
   screenCoordsToLatLngHt,
-  randomFromArr
+  randomFromArr,
+  predictPasses
 }

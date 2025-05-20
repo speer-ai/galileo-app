@@ -34,7 +34,10 @@ to start a copy.
 ## Interface and Usage
 Galileo displays a fullscreen rendering of earth and sattelites using [@react-three-fiber](https://github.com/pmndrs/react-three-fiber) and [Tailwind.css](https://tailwindcss.com/) to style the page. Galileo allows for past & future date manipulation and provides many keyboard shortcuts for users to navigate between objects. Galileo features other visuals such as orbit displays, a dynamic hexasphere, and more.
 
-The Settings panel lets you enter your latitude and longitude manually. You can also click **Use Browser Location** to automatically populate these coordinates from your web browser if geolocation is available.
+
+### Viewing Satellite Passes
+Select a satellite to see orbital details and a list of upcoming passes over your configured observer location. The pass list shows the start and end times along with the maximum elevation for the next 24&nbsp;hours.
+
 
 ## Possible Future Updates
 Galileo may be updated in the future to allow use with live sensors & data and/or the ability to control local communication devices.
