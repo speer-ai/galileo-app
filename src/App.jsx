@@ -127,20 +127,20 @@ const App = () => {
           sessionSettings={sessionSettings}
         />}
         
-      <buttton className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
+      <button className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
         <img
           className='cursor-pointer transform rotate-0 hover:rotate-45 transition-transform duration-300 ease-in-out'
           src={settingsBtn}
           alt='settings'
           onClick={() => setOpenPanel('settings')}/>
-      </buttton>
-      <buttton className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 mr-16 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
+      </button>
+      <button className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 mr-16 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
         <img
           className='cursor-pointer transform scale-100 hover:scale-110 transition-transform duration-300 ease-in-out'
           src={aboutBtn}
           alt='settings'
           onClick={() => setOpenPanel('about')}/>
-      </buttton>
+      </button>
 
 
       <SettingsPanel
