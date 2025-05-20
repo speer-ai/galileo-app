@@ -13,18 +13,24 @@ async function fetch_all_data() {
     });
 }
 
+
 function process_raw(raw) {
   const tle_data = [];
 
-  const lines = raw.split('\n');
+  if (!raw) return { retrieval_date: new Date().toISOString(), num_entries: 0, entries: [] };
 
-  for (let i = 0; i < lines.length; i += 3) { 
-    tle_data.push({
-      'id': i / 3 + 1,
-      'name': lines[i],
-      'line1': lines[i + 1],
-      'line2': lines[i + 2]
-    });
+  // remove empty lines that may occur at the end of the file
+  const lines = raw.split('\n').filter((l) => l.trim().length);
+
+  for (let i = 0; i < lines.length; i += 3) {
+    if (lines[i + 1] && lines[i + 2]) {
+      tle_data.push({
+        id: i / 3 + 1,
+        name: lines[i].trim(),
+        line1: lines[i + 1].trim(),
+        line2: lines[i + 2].trim(),
+      });
+    }
   }
 
   //give a packet to return
