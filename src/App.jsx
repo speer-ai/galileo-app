@@ -5,6 +5,7 @@ import FPSMeter from './utils/fpsMeter'
 import SettingsPanel from './components/SettingsPanel'
 import AboutPanel from './components/AboutPanel'
 import SpeedIndicator from './components/SpeedIndicator'
+import SearchBar from './components/SearchBar'
 
 import { settingsBtn } from './assets'
 import { aboutBtn } from './assets'
@@ -100,6 +101,11 @@ const App = () => {
           setSelectedHandler={setSelectedIdx}
           sessionSettings={sessionSettings}/>}
       </Suspense>
+
+      {objects &&
+      <div className='absolute left-0 top-0 m-2'>
+        <SearchBar objects={objects} setSelectedIdx={setSelectedIdx} />
+      </div>}
 
       {simulatedDatestamp && sessionSettings &&
       <DatePanel
