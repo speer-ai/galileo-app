@@ -1,17 +1,19 @@
 import DatePanel from './components/DatePanel'
-import SelectedObjectInfoBox from './components/SelectedObjectInfoBox'
-import ThreeCanvas from './components/ThreeCanvas'
 import FPSMeter from './utils/fpsMeter'
-import SettingsPanel from './components/SettingsPanel'
-import AboutPanel from './components/AboutPanel'
 import SpeedIndicator from './components/SpeedIndicator'
 import SearchBar from './components/SearchBar'
+
+import { Suspense, lazy } from 'react'
+
+const ThreeCanvas = lazy(() => import('./components/ThreeCanvas'))
+const SettingsPanel = lazy(() => import('./components/SettingsPanel'))
+const AboutPanel = lazy(() => import('./components/AboutPanel'))
+const SelectedObjectInfoBox = lazy(() => import('./components/SelectedObjectInfoBox'))
 
 import { settingsBtn } from './assets'
 import { aboutBtn } from './assets'
 import Load from './components/Load'
 
-import { Suspense } from 'react'
 import { useState, useEffect } from 'react'
 
 import load_data from './services/tle_fetch'
@@ -35,7 +37,6 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await load_data()
-      console.log('dataHere', data.entries)
       setObjects(data.entries)
     }
 
@@ -126,12 +127,14 @@ const App = () => {
       />}
 
       {selectedIdx !== NONE_SELECTED &&
-        <SelectedObjectInfoBox
-          setSelectedIdx={setSelectedIdx}
-          object={objects[selectedIdx]}
-          simulatedDatestamp={simulatedDatestamp}
-          sessionSettings={sessionSettings}
-        />}
+        <Suspense fallback={null}>
+          <SelectedObjectInfoBox
+            setSelectedIdx={setSelectedIdx}
+            object={objects[selectedIdx]}
+            simulatedDatestamp={simulatedDatestamp}
+            sessionSettings={sessionSettings}
+          />
+        </Suspense>}
         
       <button className={`${openPanel !== 'none' ? 'hidden' : 'block'} border border-2 border-sky-700 m-2 p-2 absolute right-0 top-0 w-12 bg-stone-800 h-12`}>
         <img
@@ -149,14 +152,20 @@ const App = () => {
       </button>
 
 
-      <SettingsPanel
-        openPanel={openPanel}
-        openPanelHandler={setOpenPanel}
-        sessionSettings={sessionSettings}
-        setSessionSettings={setSessionSettings}/>
-      <AboutPanel
-        openPanel={openPanel}
-        openPanelHandler={setOpenPanel}/>
+      <Suspense fallback={null}>
+        <SettingsPanel
+          openPanel={openPanel}
+          openPanelHandler={setOpenPanel}
+          sessionSettings={sessionSettings}
+          setSessionSettings={setSessionSettings}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <AboutPanel
+          openPanel={openPanel}
+          openPanelHandler={setOpenPanel}
+        />
+      </Suspense>
 
       {sessionSettings && sessionSettings.overlay.showFPSGraph &&
       <div className='absolute left-0 top-0'>

@@ -1,4 +1,3 @@
-
 var url = 'https://celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle'
 async function fetch_all_data() {
   return fetch(url)
@@ -49,9 +48,7 @@ async function load_data() {
   }
   //otherwise, fetch new data
   const raw = await fetch_all_data();
-  console.log('rawOut', raw);
   const data = process_raw(raw);
-  console.log('data', data)
 
   //store the data
   localStorage.setItem('tle_data', JSON.stringify(data));
